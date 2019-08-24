@@ -189,5 +189,7 @@ document.querySelector(".hint").addEventListener("click", () => {
     row = Math.floor(Math.random() * 8);
     col = Math.floor(Math.random() * 8);
   }
-  boardSection.children[row * 9 + col].textContent = l_oFirstBoard.board[row][col];
+  const hintValue = l_oFirstBoard.board[row][col];
+  boardSection.children[row * 9 + col].textContent = hintValue;
+  updataRemainings(hintValue, --remainings[hintValue - 1])
 })

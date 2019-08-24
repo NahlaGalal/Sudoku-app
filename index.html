@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Sudoku app</title>
+    <link rel="stylesheet" href="Css/style.css" />
+  </head>
+  <body>
+    <div class="main">
+      <main>
+        <section class="board"></section>
+        <footer>
+          <button>1</button>
+          <button>2</button>
+          <button>3</button>
+          <button>4</button>
+          <button>5</button>
+          <button>6</button>
+          <button>7</button>
+          <button>8</button>
+          <button>9</button>
+        </footer>
+      </main>
+      <aside>
+        <p class="time"></p>
+        <label> Select level </label>
+        <select id="level" name="level" default-value="0">
+          <option value="" disabled>
+            Select level
+          </option>
+          <option value="0"> Easy </option>
+          <option value="1"> Medium </option>
+          <option value="2"> Hard </option>
+        </select>
+        <button class="new-game">New Game</butto>
+        <button class="pause">Pause</button>
+        <button class="hint">Hint</button>
+      </aside>
+    </div>
+    <script src="Js/bundle.js"></script>
+  </body>
+</html>

@@ -1,0 +1,95 @@
+@import url("https://fonts.googleapis.com/css?family=Old+Standard+TT&display=swap");
+
+body {
+  font-family: "Old Standard TT", serif;
+  margin: 0;
+}
+
+.main {
+  display: flex;
+  justify-content: space-around;
+  width: 80%;
+  margin: 0 auto;
+  min-height: 100vh;
+  align-items: center;
+}
+
+.main aside {
+  display: flex;
+  flex-direction: column;
+}
+
+.main main section.board {
+  display: grid;
+  grid-template-columns: repeat(9, 50px);
+  grid-template-rows: repeat(9, 50px);
+  width: max-content;
+  margin: 0 auto;
+}
+
+.main main section.board span {
+  padding: 10px 0;
+  font-size: 24px;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+  background-color: #eee;
+}
+
+.main main section.board span:nth-child(3n + 1) {
+  border-left: 2px solid black;
+}
+
+.main main section.board span:nth-child(9n) {
+  border-right: 2px solid black;
+}
+
+.main main section.board span.top {
+  border-top: 2px solid black;
+}
+
+.main main section.board span.bottom {
+  border-bottom: 2px solid black;
+}
+
+.main main section.board span.empty {
+  background-color: #fff;
+}
+
+.main main section.board span.empty.hovered {
+  background-color: rgba(0, 0, 255, 0.2);
+}
+
+.main main section.board span.not-valid {
+  color: red;
+}
+
+.main main section.board span.hovered {
+  background: rgba(0, 0, 255, 0.25);
+}
+
+.main main footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.main main footer button {
+  width: 42px;
+  height: 42px;
+  font-size: 22px;
+  font-weight: 600;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  outline: none;
+  font-family: "Old Standard TT", serif;
+}
+
+.main main footer button sup {
+  font-size: 14px;
+  color: #999;
+}

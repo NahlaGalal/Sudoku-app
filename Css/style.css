@@ -3,23 +3,19 @@
 body {
   font-family: "Old Standard TT", serif;
   margin: 0;
+  background-color: #69a1fe;
 }
 
 .main {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
+  min-height: 100vh;
   width: 80%;
   margin: 0 auto;
-  min-height: 100vh;
   align-items: center;
 }
 
-.main aside {
-  display: flex;
-  flex-direction: column;
-}
-
-.main main section.board {
+.main main section {
   display: grid;
   grid-template-columns: repeat(9, 50px);
   grid-template-rows: repeat(9, 50px);
@@ -27,7 +23,7 @@ body {
   margin: 0 auto;
 }
 
-.main main section.board span {
+.main main section span {
   padding: 10px 0;
   font-size: 24px;
   width: 100%;
@@ -38,36 +34,36 @@ body {
   background-color: #eee;
 }
 
-.main main section.board span:nth-child(3n + 1) {
+.main main section span:nth-child(3n + 1) {
   border-left: 2px solid black;
 }
 
-.main main section.board span:nth-child(9n) {
+.main main section span:nth-child(9n) {
   border-right: 2px solid black;
 }
 
-.main main section.board span.top {
+.main main section span.top {
   border-top: 2px solid black;
 }
 
-.main main section.board span.bottom {
+.main main section span.bottom {
   border-bottom: 2px solid black;
 }
 
-.main main section.board span.empty {
+.main main section span.empty {
   background-color: #fff;
 }
 
-.main main section.board span.empty.hovered {
-  background-color: rgba(0, 0, 255, 0.2);
+.main main section span.empty.hovered {
+  background-color: rgba(255, 255, 255, 0.4);
 }
 
-.main main section.board span.not-valid {
+.main main section span.not-valid {
   color: red;
 }
 
-.main main section.board span.hovered {
-  background: rgba(0, 0, 255, 0.25);
+.main main section span.hovered {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .main main footer {
@@ -78,9 +74,9 @@ body {
 }
 
 .main main footer button {
-  width: 42px;
-  height: 42px;
-  font-size: 22px;
+  width: 40px;
+  height: 40px;
+  font-size: 24px;
   font-weight: 600;
   border: none;
   border-radius: 50%;
@@ -90,6 +86,135 @@ body {
 }
 
 .main main footer button sup {
-  font-size: 14px;
+  font-size: 16px;
   color: #999;
+}
+
+/* Aside */
+.main aside {
+  display: flex;
+  flex-direction: column;
+  min-height: 50vh;
+  justify-content: space-around;
+}
+
+.main aside div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.main aside p {
+  text-align: center;
+  font-size: 16px;
+}
+
+.main aside label {
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.main aside select {
+  padding: 10px 19px;
+  border-radius: 20px;
+  outline: none;
+  font-weight: 600;
+  font-family: "Old Standard TT", serif;
+  cursor: pointer;
+}
+
+.main aside select option {
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.main aside button {
+  background-color: #ddd;
+  border: 0;
+  padding: 20px 30px;
+  border-radius: 50px;
+  box-shadow: 4px 4px 10px inset rgb(105, 161, 254);
+  cursor: pointer;
+  outline: none;
+  font-size: 1em;
+  font-weight: 600;
+  font-family: "Old Standard TT", serif;
+  margin: 10px 0; 
+}
+
+/* Media query */
+@media screen and (max-width: 767px) {
+  .main {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .main {
+    flex-direction: column-reverse;
+  }
+
+  .main aside {
+    min-height: auto;
+  }
+
+  .main aside div{
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .main aside button {
+    margin: 0 10px;
+  }
+}
+
+@media screen and (max-width: 470px) {
+  .main main {
+    width: 90%;
+  }
+
+  .main main section {
+    grid-template-columns: repeat(9, 40px);
+    grid-template-rows: repeat(9, 40px);
+  }
+
+  .main main section span {
+    font-size: 16px;
+  }
+
+  .main main footer button {
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+  }
+  
+  .main main footer button sup {
+    font-size: 8px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .main main section {
+    grid-template-columns: repeat(9, 30px);
+    grid-template-rows: repeat(9, 30px);
+  }
+
+  .main main section span {
+    padding: 5px 0;
+  }
+
+  .main aside {
+    flex-direction: column-reverse;
+    width: 90%;
+  }
+
+  .main aside .buttons {
+    flex-direction: column;
+  }
+
+  .main aside .buttons button {
+    width: 140px;
+    margin: 5px 0;
+  }
 }

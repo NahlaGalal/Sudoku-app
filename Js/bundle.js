@@ -2064,25 +2064,33 @@ const boardSection = document.querySelector(".board");
 const footer = document.querySelector("footer");
 const timeElement = document.querySelector(".time");
 const pauseResume = document.querySelector(".pause");
-let timer, seconds = 0, paused = true;
+const hintButton = document.querySelector(".hint");
+let timer,
+  seconds = 0,
+  paused = true;
 
 // Check board complete
 const checkComplete = () => {
-  if(remainings.filter(num => num === 0).length === 9 &&
-    validations.filter(cell => !cell.validity).length === 0)
-    console.log("Completed")
+  if (
+    remainings.filter(num => num === 0).length === 9 &&
+    validations.filter(cell => !cell.validity).length === 0
+  )
+    console.log("Completed");
 };
 
 // Upadat remainings
 const updataRemainings = (index, value) => {
-  if(index) footer.children[index - 1].firstElementChild.textContent = value
-}
+  if (index) footer.children[index - 1].firstElementChild.textContent = value;
+};
 
 // Check if value of cell is true
 const checkValid = e => {
   if (!e.key.match(/[1-9]/) && e.keyCode !== 8) e.preventDefault();
   else if (e.target.textContent.length === 1 || e.keyCode === 8) {
-    updataRemainings(Number(e.target.textContent), ++remainings[e.target.textContent - 1])
+    updataRemainings(
+      Number(e.target.textContent),
+      ++remainings[e.target.textContent - 1]
+    );
     e.target.textContent = "";
   }
 };
@@ -2127,7 +2135,7 @@ const loadGame = () => {
     boardSection.removeChild(child);
     child = boardSection.lastElementChild;
   }
-  
+
   // Get HTML Sudoku board
   for (let row = 0; row < 9; row++) {
     for (let col = 0; col < 9; col++) {
@@ -2155,30 +2163,36 @@ const loadGame = () => {
 
     const remainNum = document.createElement("sup");
     remainNum.textContent = remainings[i];
-    button.appendChild(remainNum)
-  })
+    button.appendChild(remainNum);
+  });
 
   // Start time
-  if(!paused) clearInterval(timer);
+  if (!paused) clearInterval(timer);
   seconds = 0;
   timer = setInterval(() => {
-    timeElement.textContent = `${Math.floor(seconds / 60)}:${seconds%60}`;
+    timeElement.textContent = `${Math.floor(seconds / 60)}:${seconds % 60}`;
     seconds++;
   }, 1000);
   paused = false;
   pauseResume.textContent = "Pause";
   boardSection.classList.remove("disabled");
-}
+
+  // Get all hints
+  hintButton.firstElementChild.textContent = 3;
+  hintButton.classList.remove("disabled");
+};
 
 // Hover same numbers
-Array.from(footer.children).forEach(button => button.addEventListener("click", () => {
-  const num = button.textContent.slice(0, 1);
-  for (let i = 0; i < 81; i++) {
-    const child = boardSection.children[i];
-    if (child.textContent === num) child.classList.add("hovered")
-    else child.classList.remove("hovered");
-  }
-}))
+Array.from(footer.children).forEach(button =>
+  button.addEventListener("click", () => {
+    const num = button.textContent.slice(0, 1);
+    for (let i = 0; i < 81; i++) {
+      const child = boardSection.children[i];
+      if (child.textContent === num) child.classList.add("hovered");
+      else child.classList.remove("hovered");
+    }
+  })
+);
 
 SudokuGenerator.generate(1);
 let l_oFirstBoard = SudokuGenerator.generatedBoards[0];
@@ -2194,37 +2208,57 @@ document.querySelector(".new-game").addEventListener("click", () => {
   board = l_oFirstBoard.getSheet(level.value);
   remainings = numRemaining(board);
   loadGame();
-})
+});
 
 // Pause / Resume game
 pauseResume.addEventListener("click", () => {
-  if(!paused) {
+  if (!paused) {
     clearInterval(timer);
     pauseResume.textContent = "Resume";
-  }else {
+  } else {
     timer = setInterval(() => {
-      timeElement.textContent = `${Math.floor(seconds / 60)}:${seconds %
-        60}`;
+      timeElement.textContent = `${Math.floor(seconds / 60)}:${seconds % 60}`;
       seconds++;
     }, 1000);
     pauseResume.textContent = "Pause";
   }
   paused = !paused;
   boardSection.classList.toggle("disabled");
-})
+});
 
 // Get hint
-document.querySelector(".hint").addEventListener("click", () => {
-  let row = Math.floor(Math.random() * 8);
-  let col = Math.floor(Math.random() * 8);
-  while(boardSection.children[row * 9 + col].textContent !== "") {
-    row = Math.floor(Math.random() * 8);
-    col = Math.floor(Math.random() * 8);
+hintButton.addEventListener("click", () => {
+  let row = 0,
+    col = 0,
+    empty = false;
+  if (hintButton.firstElementChild.textContent == 1) {
+    hintButton.classList.add("disabled");
+  }else if (hintButton.firstElementChild.textContent == 0) {
+    return;
+  }
+  hintButton.firstElementChild.textContent--;
+  for (row = 0; row < 9; row++) {
+    for (col = 0; col < 9; col++) {
+      const content = boardSection.children[row * 9 + col].textContent;
+      if (content === "") {
+        empty = true;
+        break;
+      } else if (
+        boardSection.children[row * 9 + col].classList.contains("not-valid")
+      ) {
+        boardSection.children[row * 9 + col].classList.remove("not-valid");
+        updataRemainings(content, ++remainings[content - 1]);
+        empty = true;
+        break;
+      }
+    }
+    if (empty) break;
   }
   const hintValue = l_oFirstBoard.board[row][col];
   boardSection.children[row * 9 + col].textContent = hintValue;
-  updataRemainings(hintValue, --remainings[hintValue - 1])
-})
+  updataRemainings(hintValue, --remainings[hintValue - 1]);
+});
+
 },{"js-sudoku-generator":5}],5:[function(require,module,exports){
 (function (global,Buffer){
 !function(t,e){if("object"==typeof exports&&"object"==typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var r=e();for(var o in r)("object"==typeof exports?exports:t)[o]=r[o]}}(global,function(){return function(t){var e={};function r(o){if(e[o])return e[o].exports;var n=e[o]={i:o,l:!1,exports:{}};return t[o].call(n.exports,n,n.exports,r),n.l=!0,n.exports}return r.m=t,r.c=e,r.d=function(t,e,o){r.o(t,e)||Object.defineProperty(t,e,{configurable:!1,enumerable:!0,get:o})},r.r=function(t){Object.defineProperty(t,"__esModule",{value:!0})},r.n=function(t){var e=t&&t.__esModule?function(){return t.default}:function(){return t};return r.d(e,"a",e),e},r.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},r.p="",r.w={},r(r.s=2)}([function(t,e){const r=[1,2,3,4,5,6,7,8,9];t.exports=class{constructor(t,e,o){this.idx=t,this.srow=e,this.erow=e+2,this.scol=o,this.ecol=o+2,this.availNumbers=new Set(r),this.cells=new Set}}},function(t,e,r){const o=r(0);function n(t,e){let r=Math.round(Math.random()*e);return r=Math.max(r,t),Math.min(r,e)}function s(t,e,r){return t.find(t=>t.srow<=e&&t.erow>=e&&t.scol<=r&&t.ecol>=r)}function a(t,e,r){return t.board[r].includes(e)}function l(t,e,r){let o,n=!1;for(o=0;o<t.board.length&&!n;o++)n=t.board[o][r]===e;return n}function u(t,e){let r,o=e||Array.from(t.availNumbers);return{number:o[r=Math.round(Math.random()*(o.length-1))],index:r,list:o}}function h(t,e,r,o){let n,s=u(e),i=0,h=!1,c=!1;do{if(n=s.list,h=a(t,i=s.number,r),c=l(t,i,o),!h&&!c)break;n.splice(s.index,1),0===n.length&&(i=0),s=u(e,n)}while(n.length>0);return n.length>0&&(i=s.number),i}function c(t,e,r,o){let n,a,l=t.board,u=f.get(t).clusters;for(a=r;a>=o&&a>=0;a--)(n=s(u,e,a))?(0!==l[e][a]&&n.availNumbers.add(l[e][a]),l[e][a]=0):console.error(`ERROR: Backtracking, Couldn't Find pool for row(${i}) col(${a}) `);return a}function d(t){let e,r,o=JSON.parse(JSON.stringify(this.board));return 2===t?(e=6,r=9):1===t?(e=5,r=8):(e=3,r=7),o.forEach(function(t,e,r){let o,s,i=n(t,e);for(s=0;s<i;s++){do{o=n(0,8)}while(""===r[o]);r[o]=""}}.bind(this,e,r)),o}let f=new WeakMap;t.exports=class{constructor(){let t,e;for(this.signature=null,this.board=[],t=0;t<9;t++)(e=new Array(9)).fill(0,0,9),this.board.push(e)}generate(){let t,e,r,n,i,a,l,u=4,g=0,p=[],b=[];for(l=0,t=0;t<this.board.length;t+=3)for(e=0;e<this.board[t].length;e+=3)p.push(new o(l,t,e)),l++;for(f.set(this,{clusters:p}),t=0;t<this.board.length;t++)for(e=0;e<this.board[t].length;e++)(r=s(p,t,e))?(n=h(this,r,t,e))>0?(this.board[t][e]=n,r.availNumbers.delete(n)):((i=`${t}-${e}`)===a?(u++,g++):(u=4,g=0),a=i,g>=5?(c(this,t,e-1,0),c(this,--t,8,0),e=-1):e=c(this,t,e-1,e-u)):console.error(`ERROR: Building board, Couldn't Find pool for row(${t}) col(${e}) `);return b.push(d.call(this,0)),b.push(d.call(this,1)),b.push(d.call(this,2)),this.signature=function(t,e){let r,o,n=[],s=[[].concat(...t).join("")];for(r=0;r<e.length;r++)(o=[].concat(...e[r])).forEach((t,e)=>{""===t&&n.push(e)}),s.push(JSON.stringify(n)),n.length=0;return Buffer.from(s.join(":")).toString("base64")}(this.board,b),f.get(this).clusters.length=0,f.get(this).playSheets=b,this.board}getSheet(t){let e,r=t||0,o=f.get(this).playSheets;return(e=o[r]||o[0])||(e=d(t)),e}load(t){let e,r=Buffer.from(t,"base64").toString("ascii").split(":"),o=r.shift(),n=[];if(!o||81!==o.length||!/^\d+$/i.test(o))throw"Invalid signature received...";e=o.match(/\d{9}/g),this.signature=t,this.board=e.map(t=>t.split("").map(Number)),r.forEach(t=>{let e,r,o=JSON.parse(JSON.stringify(this.board));JSON.parse(t).forEach(t=>{e=Math.floor(t/9),r=t%9,o[e][r]=""}),n.push(o)}),f.set(this,{playSheets:n})}prettyPrint(t){let e,r,o=t||this.board,n=" |  ";for(e=0;e<o.length;e++){for(r=0;r<o[e].length;r++)n+=`${o[e][r]||" "} `,0!==r&&(r+1)%3==0&&(n+=" |  ");n+="\n",e+1<o.length&&(0!==e&&(e+1)%3==0&&(n+="\n"),n+=" |  ")}console.log(n)}}},function(t,e,r){const o=r(1);console.log("Sudoku Generator Generated..."),t.exports={SudokuGenerator:new class{constructor(){this.generatedBoards=[]}generate(t){let e,r;for(Number(t),this.generatedBoards.length=0,e=0;e<t;e++)(r=new o).generate(),this.generatedBoards.push(r),console.log(`SudokuGenerator::Generation @ ${(e/t*100).toFixed(2)} %`);return console.log("SudokuGenerator::Generation @ 100 %"),this.generatedBoards}loadBoard(t){let e=new o;try{e.load(t),this.generatedBoards.find(t=>t.signature===e.signature)||this.generatedBoards.push(e)}catch(r){e=null,console.error("Error loading board with signature: ",t)}return e}}}}])});

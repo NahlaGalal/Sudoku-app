@@ -162,6 +162,14 @@ body {
   margin: 10px 0;
 }
 
+.main aside button.hint.disabled {
+  cursor: not-allowed;
+}
+
+.main aside button.hint span {
+  font-size: 8px;
+}
+
 /* Media query */
 @media screen and (max-width: 767px) {
   .main {

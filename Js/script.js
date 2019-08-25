@@ -137,6 +137,7 @@ const loadGame = () => {
   }, 1000);
   paused = false;
   pauseResume.textContent = "Pause";
+  boardSection.classList.remove("disabled");
 }
 
 // Hover same numbers
@@ -179,6 +180,7 @@ pauseResume.addEventListener("click", () => {
     pauseResume.textContent = "Pause";
   }
   paused = !paused;
+  boardSection.classList.toggle("disabled");
 })
 
 // Get hint

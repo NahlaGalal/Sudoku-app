@@ -75,6 +75,7 @@ body {
   width: 450px;
   text-transform: uppercase;
   line-height: 450px;
+  margin: 0;
 }
 
 .main main section.disabled + p {
@@ -168,6 +169,33 @@ body {
 
 .main aside button.hint span {
   font-size: 8px;
+}
+
+/* Modal */
+.completed {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.completed button {
+  background-color: #ddd;
+  border: 0;
+  padding: 20px 30px;
+  border-radius: 50px;
+  box-shadow: 4px 4px 10px inset rgb(105, 161, 254);
+  cursor: pointer;
+  outline: none;
+  font-size: 1em;
+  font-weight: 600;
+  font-family: "Old Standard TT", serif;
+  margin: 10px 0;
+}
+
+.hidden {
+  display: none;
 }
 
 /* Media query */

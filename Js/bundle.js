@@ -2071,11 +2071,15 @@ let timer,
 
 // Check board complete
 const checkComplete = () => {
+  let validations = true;
+  Array.from(boardSection.children).forEach(element => element.classList.contains("not-valid") ? validations = false : null)
   if (
     remainings.filter(num => num === 0).length === 9 &&
-    validations.filter(cell => !cell.validity).length === 0
-  )
-    console.log("Completed");
+    validations
+  ) {
+    document.querySelector(".completed").classList.remove("hidden");
+    document.querySelector(".main").classList.add("hidden");
+  }
 };
 
 // Upadat remainings
@@ -2202,13 +2206,17 @@ loadGame();
 
 // New game
 const level = document.querySelector("select");
-document.querySelector(".new-game").addEventListener("click", () => {
-  SudokuGenerator.generate(1);
-  l_oFirstBoard = SudokuGenerator.generatedBoards[0];
-  board = l_oFirstBoard.getSheet(level.value);
-  remainings = numRemaining(board);
-  loadGame();
-});
+Array.from(document.querySelectorAll(".new-game")).forEach(button =>
+  button.addEventListener("click", () => {
+    document.querySelector(".completed").classList.add("hidden");
+    document.querySelector(".main").classList.remove("hidden");
+    SudokuGenerator.generate(1);
+    l_oFirstBoard = SudokuGenerator.generatedBoards[0];
+    board = l_oFirstBoard.getSheet(level.value);
+    remainings = numRemaining(board);
+    loadGame();
+  })
+);
 
 // Pause / Resume game
 pauseResume.addEventListener("click", () => {
@@ -2233,7 +2241,7 @@ hintButton.addEventListener("click", () => {
     empty = false;
   if (hintButton.firstElementChild.textContent == 1) {
     hintButton.classList.add("disabled");
-  }else if (hintButton.firstElementChild.textContent == 0) {
+  } else if (hintButton.firstElementChild.textContent == 0) {
     return;
   }
   hintButton.firstElementChild.textContent--;
@@ -2257,6 +2265,7 @@ hintButton.addEventListener("click", () => {
   const hintValue = l_oFirstBoard.board[row][col];
   boardSection.children[row * 9 + col].textContent = hintValue;
   updataRemainings(hintValue, --remainings[hintValue - 1]);
+  checkComplete();
 });
 
 },{"js-sudoku-generator":5}],5:[function(require,module,exports){
